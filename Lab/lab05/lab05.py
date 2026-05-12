@@ -27,6 +27,13 @@ def insert_items(s, before, after):
     True
     """
     "*** YOUR CODE HERE ***"
+    move = 0
+    for i in range(len(s)):
+        if s[i+move] == before:
+            s[i+move+1:i+move+1] = [after]
+            move += 1
+    return s
+
 
 
 def group_by(s, fn):
@@ -40,12 +47,12 @@ def group_by(s, fn):
     {9: [-3, 3], 4: [-2, 2], 1: [-1, 1], 0: [0]}
     """
     grouped = {}
-    for ____ in ____:
-        key = ____
+    for i in s:
+        key = fn(i)
         if key in grouped:
-            ____
+            grouped[key].append(i)
         else:
-            grouped[key] = ____
+            grouped[key] = [i]
     return grouped
 
 
@@ -71,7 +78,11 @@ def count_occurrences(t, n, x):
     2
     """
     "*** YOUR CODE HERE ***"
-
+    count = 0
+    for i in range(n):
+        if next(t) == x:
+            count += 1
+    return count
 
 def repeated(t, k):
     """Return the first value in iterator t that appears k times in a row,
@@ -94,8 +105,19 @@ def repeated(t, k):
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
-
-
+    first = next(t)     # 直接使用while循环简单count就可以
+    def repeat(count):
+        nonlocal first
+        for i in t:
+            if i == first:
+                if count == 2:
+                    return first
+                first = i
+                return repeat(count-1)
+            else: 
+                first = i
+                return repeat(k)
+    return repeat(k)
 def sprout_leaves(t, leaves):
     """Sprout new leaves containing the labels in leaves at each leaf of
     the original tree t and return the resulting tree.
@@ -130,7 +152,13 @@ def sprout_leaves(t, leaves):
           2
     """
     "*** YOUR CODE HERE ***"
-
+    if is_leaf(t):
+        for leaf in leaves:
+            t.append([leaf])
+    else:
+        for b in branches(t):
+            sprout_leaves(b, leaves)
+    return t
 
 def partial_reverse(s, start):
     """Reverse part of a list in-place, starting with start up to the end of
@@ -145,6 +173,19 @@ def partial_reverse(s, start):
     [1, 2, 7, 6, 5, 3, 4]
     """
     "*** YOUR CODE HERE ***"
+    it = iter(s)
+    for i in it:
+        if i == start:
+            break
+    sr = list(it)
+    sr.reverse()
+    if sr: 
+        s[:] = s[:-len(sr)] + sr.
+
+'''another solution
+s[:] = s[:s.index(start)+1] + s[:s.index(start):-1]
+'''
+
 
 
 

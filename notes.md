@@ -371,6 +371,14 @@ def count_dollars(total):
 
 `λx.λy.y`  False
 
+`λb.(λx.λy.b(xy))`  if then
+
+`λb.(λx.λy.(b(λx.λy.x)(λx.λy.y)))` not
+
+`λa.λb.(a(b)(λx.λy.y))` and
+
+`λa.λb.(a(λx.λy.x)(b))` or
+
 `λf.(λx.f(xx))(λx.f(xx))` Y组合子，可以用于无限递归
 
 `λf.(λx.f(xxv))(λx.f(xxv))` Z组合子，严格求值，用于实际编程语言中递归
@@ -403,6 +411,19 @@ def u(f):
 <p>&nbsp;</p>
 
 # sequence
+
+list可以更改，但是不能用一个新的变量引用来对list中的元素进行更改
+
+```python
+list = [1, 2, 3]
+for i in list:
+    i += 1
+
+list
+>>>[1, 2, 3]        # i += 1的操作实际创造了新的对象并且将i的引用更改至该内存地址，而非实际更改了list
+
+
+
 ```python
 # list 乘法是对整体repeat， 而不是对元素
 list = [1, 2, 3]
@@ -425,6 +446,8 @@ for _ in range(1, 4):
 sum(iterable, key_func= )       
 max(iterable, key_func= )
 min(iterable, key_func= )
+
+lst.reverse()       # 直接对对象反向，返回none
 
 
 ```
@@ -501,8 +524,98 @@ sum([[1, 2, 3]], [[4, 5]] [])
 >>> [1, 2, 3, 4, 5]
 
 
+# tree structure
+
+def tree(label, branches=[]):
+    """Construct a tree with the given label value and a list of branches."""
+    for branch in branches:
+        assert is_tree(branch), 'branches must be trees'
+    return [label] + list(branches)
+
+
+
 ```
 
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+# mutability
+
+函数默认参数值最好避免使用可变参数值，比如s=[]，以防每次调用函数时该参数都会发生变化
+```python
+def print_len(s=[])
+    s.append(3)
+    print(len(s))
+
+print_len()
+print_len()
+print_len()
+
+>>> 1
+>>> 2
+>>> 3
+```
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+# iterators
+函数iter记录下一个迭代对象的位置，next则**先返回**iter记录的位置对应的值，然后再向前移动
+```python
+list = [1, 2, 3, 4]
+i = iter(list)      #生成迭代器
+print(i)
+
+>>> 1
+
+next(i)     # 移动指针
+print(i)
+
+>>> 2
+
+# for 不仅可以用于iterable object，还可以用于iterator
+it = iter(list)
+for i in it:        #for 会自动next()
+    print(i)
+
+>>> 1
+>>> 2
+>>> 3
+>>> 4
+# 此时it已经迭代到end
+for i in it:
+    print(i)
+
+# nothing
+```
+
+有些object为惰性计算，只有在调用时才计算出目标值然后next，并且不存储数据，这意味着当你需要调用某个指定项时，
+它需要迭代到目标位置才能输出结果，用时间换空间
+
+比如map，range，reserved，其中range由于通用性强，其使用公式来计算目标值，因而可以直接调用任一项
+
+
+<p>&nbsp;</p>
+
+## zip
+zip函数可以将多个iterable objects 相同index的element以tuple存储,len取最小值
+```python 
+zip([1, 2], [2, 4, 5], [6, 7])
+
+>>> [(1, 2, 6), (2, 4, 7)]
+```
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+# object
+变量不会指向变量，如果一个变量指向另一个变量，它不会在此停留，而是继续下去，直到指向一个object为止
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 
 # class
