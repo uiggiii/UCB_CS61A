@@ -567,12 +567,12 @@ list = [1, 2, 3, 4]
 i = iter(list)      #生成迭代器
 print(i)
 
+>>> 0xdh435ffdg5321
+
+# 移动指针
+print(next(i))
+
 >>> 1
-
-next(i)     # 移动指针
-print(i)
-
->>> 2
 
 # for 不仅可以用于iterable object，还可以用于iterator
 it = iter(list)
@@ -609,10 +609,56 @@ zip([1, 2], [2, 4, 5], [6, 7])
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
+# generator
+generator是由yield自动生成的特殊iterator，无需维护
+
+```python
+g = (i for i in range(4))
+
+def g(x):
+    yield x
+    yield -x
+```
+
+generator 的一些方法
+send方法会向**停留处的yield**传入value，next等价于send（None），因为yield是一种双向通道，不仅会输出还能输入
+```python
+def g():
+    x = yield 2
+    y = yield 3
+    print(y)
+
+h = g()
+print(next(h))
+print(h.send(999))
+
+>>> 2
+>>> 3
+>>> 999
+```
+`g.close()`终止generator
+`yield form` 允许generator从其他iterator拉取value
+
+
+
+
 
 # object
 变量不会指向变量，如果一个变量指向另一个变量，它不会在此停留，而是继续下去，直到指向一个object为止
 
+```python
+a = 1       # 对象复用
+b = 1
+a is b
+
+>>> True
+
+a = []
+b = []
+a is b
+
+>>> False
+```
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -621,3 +667,4 @@ zip([1, 2], [2, 4, 5], [6, 7])
 # class
 class 在我的理解中是定义出一套完备的，逻辑自洽的系统，类似于数学中开辟复数域，附带一整套可以作用于该系统的方法。
 
+class 中的__init__默认返回none,不能return
