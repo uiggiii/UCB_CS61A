@@ -9,6 +9,26 @@ def f():
     index = (index + 1) % len(list)
     return list[index]
 ```
+
+### 两个可以让函数随时变化的例子（闭包，类）
+```python
+# 闭包
+def make_counter():
+    count = 0
+
+    def f():
+        nonlocal count
+        count += 1
+        print(count)
+
+    return f
+
+
+```
+
+
+
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -476,8 +496,8 @@ func.__name__
 
 # all函数，接收一个iterable, 只有在全为真时返回True
 # any函数，接收一个iterable，存在一真则为True
-all(1, 2, 0)
-any(1, 2, 0)
+all([1, 2, 0])
+any([1, 2, 0])
 >>> False
 >>> True
 
@@ -520,7 +540,7 @@ index([1, 2, 3, 4], range(20), lambda x, y:y == x*x)
 '''sum函数本质是加法，因此当给予一个空列表时，sum可以输出一个列表'''
 sum([[1, 2, 3]], [[4, 5]] [])
 
-'''
+
 >>> [1, 2, 3, 4, 5]
 
 
@@ -532,7 +552,7 @@ def tree(label, branches=[]):
         assert is_tree(branch), 'branches must be trees'
     return [label] + list(branches)
 
-
+raise AssertionError('fuk')
 
 ```
 
@@ -668,3 +688,23 @@ a is b
 class 在我的理解中是定义出一套完备的，逻辑自洽的系统，类似于数学中开辟复数域，附带一整套可以作用于该系统的方法。
 
 class 中的__init__默认返回none,不能return
+
+为了复用父类逻辑，在子类中通过 super() 按继承链顺序调用父类方法
+
+
+class中的函数本质也是attribute，也可以进行更改，注意传入参数依旧是self而不是临时状态
+```python
+class A:
+    def f(self):
+        print(1)
+
+A.f = lambda self:print(2)
+
+a = A()
+a.f()
+
+>>> 2
+```
+
+## Attribute
+除class外，函数对象也有属性
